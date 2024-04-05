@@ -1,13 +1,13 @@
 import React, { useState } from "react";
+import { Outlet } from "react-router-dom";
 import { PlusOutlined } from "@ant-design/icons";
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Button, Flex, Image, Input, Layout } from "antd";
 import { Content, Footer, Header } from "antd/es/layout/layout";
 
-import { Feed } from "@/pages/feed";
+import logo from "@/logo.svg";
 
 import { Drawer } from "./drawer";
-import logo from "./logo.png";
 
 const { Search } = Input;
 
@@ -23,7 +23,7 @@ export const MainLayout = () => {
       <Header style={{ backgroundColor: "#fff" }}>
         <Flex style={{ height: "100%" }} justify="space-between" align="center">
           <Flex align="center">
-            <Image width={100} src={logo} />
+            <Image preview={false} width={100} src={logo} />
             <Search placeholder="input search text" allowClear style={{ width: 400, marginLeft: 60 }} size="large" />
           </Flex>
           <Flex align="center">
@@ -34,7 +34,7 @@ export const MainLayout = () => {
         </Flex>
       </Header>
       <Content style={{ margin: "60px 120px" }}>
-        <Feed />
+        <Outlet />
       </Content>
       <Footer style={{ textAlign: "center" }}>ООО я трахнул твою мамку 2024</Footer>
       <Drawer onClose={drawerHandler} open={open} />

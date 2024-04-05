@@ -3,11 +3,14 @@ import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { Route, Routes } from "react-router-dom";
+import { ConfigProvider } from "antd";
 
 import { routes } from "@/shared/router";
 import { MainLayout } from "@/shared/ui/layout";
 
-import { store } from "./app/store";
+import { SignIn } from "./pages/sign-in";
+import { store } from "./shared/store";
+import { theme } from "./shared/theme";
 import reportWebVitals from "./reportWebVitals";
 
 import "./index.css";
@@ -15,17 +18,20 @@ import "./index.css";
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Provider store={store}>
-        <Routes>
-          <Route path="/" element={<MainLayout />}>
-            {routes.map((route) => (
-              <Route key={route.path} {...route} />
-            ))}
-          </Route>
-        </Routes>
-      </Provider>
-    </BrowserRouter>
+    <ConfigProvider theme={theme}>
+      <BrowserRouter>
+        <Provider store={store}>
+          <Routes>
+            <Route path="/" element={<MainLayout />}>
+              {routes.map((route) => (
+                <Route key={route.path} {...route} />
+              ))}
+            </Route>
+            <Route key="signin" path="signin" element={<SignIn />} />
+          </Routes>
+        </Provider>
+      </BrowserRouter>
+    </ConfigProvider>
   </React.StrictMode>,
 );
 
