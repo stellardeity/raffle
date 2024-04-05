@@ -1,64 +1,67 @@
 import Fastify, { FastifyReply, FastifyRequest } from "fastify";
 import pg from "@fastify/postgres";
 import cors from '@fastify/cors';
-
-const fastify = Fastify({
-  logger: true,
-});
-
-fastify.register(pg, {
-  connectionString: "postgres://postgres:root@localhost/raffle",
-});
-
-fastify.register(cors, { 
-  origin: true
-});
-
-
-fastify.get("/users", (req: FastifyRequest, reply: FastifyReply) => {
-  fastify.pg.connect(onConnect);
-
-  function onConnect(err: Error, client, release) {
-    if (err) return reply.send(err);
-
-    client.query("SELECT * FROM users;", function onResult(err: Error, result) {
-      release();
-      reply.send(err || result?.rows);
-    });
-  }
-});
-
-
-fastify.get("/categories", (req: FastifyRequest, reply: FastifyReply) => {
-  fastify.pg.connect(onConnect);
-
-  function onConnect(err: Error, client, release) {
-    if (err) return reply.send(err);
-
-    client.query("SELECT * FROM categories;", function onResult(err: Error, result) {
-      release();
-      reply.send(err || result?.rows);
-    });
-  }
-});
-
-
-fastify.get("/ads", (req: FastifyRequest, reply: FastifyReply) => {
-  fastify.pg.connect(onConnect);
-
-  function onConnect(err: Error, client, release) {
-    if (err) return reply.send(err);
-
-    client.query("SELECT * FROM ads;", function onResult(err: Error, result) {
-      release();
-      reply.send(err || result?.rows);
-    });
-  }
-});
+import { userRoutes } from "./user/user.route";
+import fjwt, { FastifyJWT } from '@fastify/jwt';
+import fCookie from '@fastify/cookie';
 
 const PORT = 8080;
 
-fastify.listen({ port: PORT }, (err) => {
-  if (err) throw err;
-  console.log(`server listening on ${PORT}`);
+const app = Fastify({
+    logger: true,
 });
+
+app.decorate(
+    'authenticate',
+    async (req: FastifyRequest, reply: FastifyReply) => {
+        const token = req.cookies.access_token;
+        if (!token) {
+            return reply.status(401).send({ message: 'Authentication required' });
+        }
+        const decoded = req.jwt.verify<FastifyJWT['user']>(token);
+        req.user = decoded;
+    },
+);
+
+app.register(fjwt, { secret: 'supersecretcode-CHANGE_THIS-USE_ENV_FILE' });
+
+app.addHook('preHandler', (req: FastifyRequest, _, next) => {
+    req.jwt = app.jwt;
+    req.pg = app.pg;
+    return next();
+});
+
+app.register(fCookie, {
+    secret: 'some-secret-key',
+    hook: 'preHandler',
+});
+
+app.register(pg, {
+    connectionString: "postgres://postgres:root@localhost/raffle",
+});
+
+app.register(cors, { 
+    origin: true
+});
+
+app.register(userRoutes, { prefix: 'api/v1' });
+
+app.get('/healthcheck', (req, res) => {
+    res.send({ message: 'Success' });
+});
+
+const listeners = ['SIGINT', 'SIGTERM'];
+listeners.forEach((signal) => {
+    process.on(signal, async () => {
+        await app.close();
+        process.exit(0);
+    });
+});
+
+async function main() {
+    await app.listen({
+        port: PORT,
+        host: '0.0.0.0',
+    });
+}
+main();

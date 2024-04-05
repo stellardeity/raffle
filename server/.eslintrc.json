@@ -12,6 +12,15 @@
   },
   "plugins": ["@typescript-eslint"],
   "rules": {
-    "semi": ["error", "always"]
+    "semi": ["error", "always"],
+    "indent": ["error", 4],
+    "arrow-spacing": [
+      "error",
+      {
+        "before": true,
+        "after": true
+      }
+    ],
+    "object-curly-spacing": ["error", "always"]
   }
 }
