@@ -3,10 +3,13 @@ import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Col, Row } from "antd";
 
 import { useGetAdsQuery } from "@/entities/adsApi";
+import { useGetUsersProfileQuery } from "@/entities/usersApi";
 import { Card } from "@/shared/ui/card";
 
 export const Profile = () => {
   const { data: ads } = useGetAdsQuery();
+  const { data: profile } = useGetUsersProfileQuery();
+
   return (
     <Row>
       <Col span={18} push={6}>

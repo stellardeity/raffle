@@ -50,7 +50,6 @@ export async function login(req: FastifyRequest<{
         login: user.login,
     };
     const token = req.jwt.sign(payload, { expiresIn: 36000 });
-    console.log(user);
     reply.setCookie('access_token', token, {
         path: '/',
         httpOnly: true,

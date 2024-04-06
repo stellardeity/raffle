@@ -9,7 +9,20 @@ export const adsApi = createApi({
     getAds: builder.query<any, void>({
       query: () => "/ads",
     }),
+
+    getCategories: builder.query<any, void>({
+      query: () => "/ads/categories",
+    }),
+    getFields: builder.mutation<any, { title: string }>({
+      query(data) {
+        return {
+          url: `/ads/fields`,
+          method: "POST",
+          body: data,
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetAdsQuery } = adsApi;
+export const { useGetAdsQuery, useGetFieldsMutation, useGetCategoriesQuery } = adsApi;

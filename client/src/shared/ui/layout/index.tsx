@@ -4,6 +4,7 @@ import { PlusOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar, Button, Flex, Image, Input, Layout } from "antd";
 import { Content, Footer, Header } from "antd/es/layout/layout";
 
+import { CatigoriesModal } from "@/features/categories-modal";
 import logo from "@/logo.svg";
 
 import { Drawer } from "./drawer";
@@ -14,12 +15,19 @@ export const MainLayout = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
   const drawerHandler = () => {
     setOpen(!open);
   };
 
   return (
     <Layout style={{ height: "100vh" }}>
+      <CatigoriesModal open={isModalOpen} setIsModalOpen={setIsModalOpen} />
       <Header style={{ backgroundColor: "#fff" }}>
         <Flex style={{ height: "100%" }} justify="space-between" align="center">
           <Flex align="center">
@@ -27,7 +35,7 @@ export const MainLayout = () => {
             <Search placeholder="Поиск" allowClear style={{ width: 400, marginLeft: 60 }} size="large" />
           </Flex>
           <Flex align="center">
-            <Button onClick={() => navigate("/ads/create")} icon={<PlusOutlined />} size="large" />
+            <Button onClick={showModal} icon={<PlusOutlined />} size="large" />
             <h3 onClick={() => navigate("/feed")} style={{ marginLeft: 60, cursor: "pointer" }}>
               Лента
             </h3>
