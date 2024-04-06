@@ -1,6 +1,8 @@
 import React from "react";
 import { ReactNode } from "react";
 
+import { AdsEdit } from "@/pages/ads-edit";
+import { AdsRead } from "@/pages/ads-read";
 import { Feed } from "@/pages/feed";
 import { Profile } from "@/pages/profile";
 import { Redirect } from "@/pages/redirect";
@@ -26,6 +28,30 @@ export const routes: Route[] = [
     element: (
       <ProtectedRoute>
         <Profile />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/ads/create",
+    element: (
+      <ProtectedRoute>
+        <AdsEdit />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/ads/edit",
+    element: (
+      <ProtectedRoute>
+        <AdsEdit />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/ads/read",
+    element: (
+      <ProtectedRoute>
+        <AdsRead />
       </ProtectedRoute>
     ),
   },

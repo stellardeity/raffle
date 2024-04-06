@@ -1,9 +1,19 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { EditOutlined, EllipsisOutlined } from "@ant-design/icons";
 import { Card as AntdCard, Flex } from "antd";
 
 export const Card: React.FC<any> = ({ data }: any) => {
+  const navigate = useNavigate();
+
   return (
-    <AntdCard cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}>
+    <AntdCard
+      actions={[
+        <EditOutlined onClick={() => navigate("/ads/edit")} key="edit" />,
+        <EllipsisOutlined onClick={() => navigate("/ads/read")} key="ellipsis" />,
+      ]}
+      cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
+    >
       <Flex justify="space-between" align="end">
         <div>
           <h1>{data.title}</h1>

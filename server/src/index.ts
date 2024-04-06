@@ -1,10 +1,11 @@
 import Fastify, { FastifyReply, FastifyRequest } from "fastify";
 import pg from "@fastify/postgres";
 import cors from '@fastify/cors';
-import { userRoutes } from "./user/user.route";
+import { authRoutes } from "./auth/auth.route";
 import fjwt, { FastifyJWT } from '@fastify/jwt';
 import fCookie from '@fastify/cookie';
 import { adsRoutes } from "./ads/ads.route";
+import { usersRoutes } from "./users/users.route";
 
 const PORT = 8080;
 
@@ -46,8 +47,9 @@ app.register(cors, {
     origin: true
 });
 
-app.register(userRoutes, { prefix: 'api/v1' });
+app.register(authRoutes, { prefix: 'api/v1' });
 app.register(adsRoutes, { prefix: 'api/v1/ads' });
+app.register(usersRoutes, { prefix: 'api/v1/users' });
 
 app.get('/healthcheck', (req, res) => {
     res.send({ message: 'Success' });

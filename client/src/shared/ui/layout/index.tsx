@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { PlusOutlined } from "@ant-design/icons";
-import { UserOutlined } from "@ant-design/icons";
+import { PlusOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar, Button, Flex, Image, Input, Layout } from "antd";
 import { Content, Footer, Header } from "antd/es/layout/layout";
 
@@ -28,7 +27,7 @@ export const MainLayout = () => {
             <Search placeholder="Поиск" allowClear style={{ width: 400, marginLeft: 60 }} size="large" />
           </Flex>
           <Flex align="center">
-            <Button icon={<PlusOutlined />} size="large" />
+            <Button onClick={() => navigate("/ads/create")} icon={<PlusOutlined />} size="large" />
             <h3 onClick={() => navigate("/feed")} style={{ marginLeft: 60, cursor: "pointer" }}>
               Лента
             </h3>

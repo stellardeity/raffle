@@ -34,9 +34,9 @@ export async function login(req: FastifyRequest<{
     const { login, password } = req.body;
 
     const client = await req.pg.connect();
-    const { rows: user } = await client.query(`SELECT * FROM users WHERE login = '${login}';`);
+    const { rows: [user] } = await client.query(`SELECT * FROM users WHERE login = '${login}';`);
 
-    const isMatch = user.length && (await bcrypt.compare(password, user[0].password));
+    const isMatch = user && (await bcrypt.compare(password, user.password));
     if (!user || !isMatch) {
         return reply.code(401).send({
             status: 401,
@@ -49,8 +49,8 @@ export async function login(req: FastifyRequest<{
         id: user.id,
         login: user.login,
     };
-
     const token = req.jwt.sign(payload, { expiresIn: 36000 });
+    console.log(user);
     reply.setCookie('access_token', token, {
         path: '/',
         httpOnly: true,

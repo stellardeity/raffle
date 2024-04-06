@@ -5,8 +5,8 @@ export const ProtectedRoute = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = JSON.parse(localStorage.getItem("access_token") || "{}");
-    if (!token) {
+    const token = JSON.parse(localStorage.getItem("access_token") || "[]");
+    if (!token || !token.length) {
       navigate("/signin");
     }
   }, []);

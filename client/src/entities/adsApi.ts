@@ -1,15 +1,10 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
+
+import { baseQuery } from "@/shared/base-query";
 
 export const adsApi = createApi({
   reducerPath: "ads",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "http://127.0.0.1:8080/api/v1",
-    prepareHeaders: (headers) => {
-      const token = JSON.parse(localStorage.getItem("access_token") || "{}");
-      headers.set("Authorization", `Bearer ${token}`);
-      return headers;
-    },
-  }),
+  baseQuery,
   endpoints: (builder) => ({
     getAds: builder.query<any, void>({
       query: () => "/ads",
