@@ -4,6 +4,7 @@ import cors from '@fastify/cors';
 import { userRoutes } from "./user/user.route";
 import fjwt, { FastifyJWT } from '@fastify/jwt';
 import fCookie from '@fastify/cookie';
+import { adsRoutes } from "./ads/ads.route";
 
 const PORT = 8080;
 
@@ -14,7 +15,8 @@ const app = Fastify({
 app.decorate(
     'authenticate',
     async (req: FastifyRequest, reply: FastifyReply) => {
-        const token = req.cookies.access_token;
+        // const token = req.cookies.access_token;
+        const token = req.headers.authorization.split(' ')[1];
         if (!token) {
             return reply.status(401).send({ message: 'Authentication required' });
         }
@@ -45,6 +47,7 @@ app.register(cors, {
 });
 
 app.register(userRoutes, { prefix: 'api/v1' });
+app.register(adsRoutes, { prefix: 'api/v1/ads' });
 
 app.get('/healthcheck', (req, res) => {
     res.send({ message: 'Success' });

@@ -3,6 +3,8 @@ import { ReactNode } from "react";
 
 import { Feed } from "@/pages/feed";
 
+import { ProtectedRoute } from "../entities/auth/protected-route";
+
 interface Route {
   path: string;
   element: ReactNode;
@@ -11,6 +13,10 @@ interface Route {
 export const routes: Route[] = [
   {
     path: "/",
-    element: <Feed />,
+    element: (
+      <ProtectedRoute>
+        <Feed />
+      </ProtectedRoute>
+    ),
   },
 ];

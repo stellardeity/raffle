@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start:prod": "tsc -p tsconfig.json && node ./dist/index.js",
-    "start": "tsc-watch --project . --outDir ./dist --onSuccess \"nodemon ./dist/index.js\""
+    "start:watch": "tsc-watch --project . --outDir ./dist --onSuccess \"nodemon ./dist/index.js\""
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +15,7 @@
     "@fastify/jwt": "^8.0.0",
     "@fastify/postgres": "^5.2.2",
     "fastify": "^4.26.2",
+    "fastify-plugin": "^4.5.1",
     "pg": "^8.11.5"
   },
   "devDependencies": {

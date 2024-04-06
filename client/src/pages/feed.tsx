@@ -2,7 +2,7 @@ import React from "react";
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Col, Row } from "antd";
 
-import { useGetAdsQuery } from "@/entities/usersApi";
+import { useGetAdsQuery } from "@/entities/adsApi";
 import { Card } from "@/shared/ui/card";
 
 export const Feed = () => {

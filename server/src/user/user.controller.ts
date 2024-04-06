@@ -36,9 +36,10 @@ export async function login(req: FastifyRequest<{
     const client = await req.pg.connect();
     const { rows: user } = await client.query(`SELECT * FROM users WHERE login = '${login}';`);
 
-    const isMatch = user && (await bcrypt.compare(password, user[0].password));
+    const isMatch = user.length && (await bcrypt.compare(password, user[0].password));
     if (!user || !isMatch) {
         return reply.code(401).send({
+            status: 401,
             message: 'Invalid email or password',
         });
     }
@@ -49,7 +50,7 @@ export async function login(req: FastifyRequest<{
         login: user.login,
     };
 
-    const token = req.jwt.sign(payload);
+    const token = req.jwt.sign(payload, { expiresIn: 36000 });
     reply.setCookie('access_token', token, {
         path: '/',
         httpOnly: true,
