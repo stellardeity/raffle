@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { PlusOutlined } from "@ant-design/icons";
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Button, Flex, Image, Input, Layout } from "antd";
@@ -12,6 +12,7 @@ import { Drawer } from "./drawer";
 const { Search } = Input;
 
 export const MainLayout = () => {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
   const drawerHandler = () => {
@@ -24,11 +25,13 @@ export const MainLayout = () => {
         <Flex style={{ height: "100%" }} justify="space-between" align="center">
           <Flex align="center">
             <Image preview={false} width={100} src={logo} />
-            <Search placeholder="input search text" allowClear style={{ width: 400, marginLeft: 60 }} size="large" />
+            <Search placeholder="Поиск" allowClear style={{ width: 400, marginLeft: 60 }} size="large" />
           </Flex>
           <Flex align="center">
             <Button icon={<PlusOutlined />} size="large" />
-            <h3 style={{ marginLeft: 60, cursor: "pointer" }}>Лента</h3>
+            <h3 onClick={() => navigate("/feed")} style={{ marginLeft: 60, cursor: "pointer" }}>
+              Лента
+            </h3>
             <Avatar size={50} onClick={drawerHandler} style={{ marginLeft: 60 }} icon={<UserOutlined />} />
           </Flex>
         </Flex>
