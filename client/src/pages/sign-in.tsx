@@ -29,6 +29,8 @@ export const SignIn: React.FC = () => {
 
   const onFinish = (values: any) => {
     login(values);
+    navigate("/");
+
     setValues(values);
   };
 
@@ -37,13 +39,6 @@ export const SignIn: React.FC = () => {
       showModal();
     }
   }, [isErrorLogin]);
-
-  useEffect(() => {
-    if (data?.accessToken) {
-      localStorage.setItem("access_token", JSON.stringify(data?.accessToken));
-      navigate("/");
-    }
-  }, [data]);
 
   return (
     <Flex align="center" justify="center" style={{ height: "100vh" }}>

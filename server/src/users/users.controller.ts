@@ -9,7 +9,7 @@ export async function getUsers(req: FastifyRequest, reply: FastifyReply) {
 export async function getUserProfile(req: FastifyRequest, reply: FastifyReply) {
     const client = await req.pg.connect();
 
-    const decodedToken = req.jwt.verify( req.headers.authorization.split(' ')[1]);
+    const decodedToken = req.jwt.verify(req.cookies.access_token);
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const { rows: [result] } = await client.query(`SELECT * FROM users WHERE id = '${decodedToken.id}';`);

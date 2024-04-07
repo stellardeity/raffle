@@ -11,7 +11,6 @@ export const Drawer = ({ onClose, open }: any) => {
 
   const logoutHandler = () => {
     navigate("/signin");
-    localStorage.removeItem("access_token");
     logout();
   };
   return (

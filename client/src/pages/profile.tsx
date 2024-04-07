@@ -1,13 +1,23 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Col, Row } from "antd";
 
-import { useGetAdsProfileMutation, useGetUserProfileQuery } from "@/entities/usersApi";
+import { useGetAdsProfileMutation, useLazyGetUserProfileQuery } from "@/entities/usersApi";
 import { Card } from "@/shared/ui/card";
 
 export const Profile = () => {
-  const { data: profile } = useGetUserProfileQuery();
+  const [trggerGetUser, { data: profile, isError }] = useLazyGetUserProfileQuery();
   const [getAdsProfile, { data: ads }] = useGetAdsProfileMutation();
+  const navigate = useNavigate();
+
+  if (isError) {
+    navigate("/signin");
+  }
+
+  useEffect(() => {
+    trggerGetUser();
+  }, []);
 
   useEffect(() => {
     profile?.id && getAdsProfile(profile?.id);

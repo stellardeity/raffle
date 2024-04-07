@@ -20,4 +20,4 @@ export const usersApi = createApi({
   }),
 });
 
-export const { useGetUserProfileQuery, useGetAdsProfileMutation } = usersApi;
+export const { useLazyGetUserProfileQuery, useGetAdsProfileMutation } = usersApi;

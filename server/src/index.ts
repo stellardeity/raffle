@@ -16,8 +16,7 @@ const app = Fastify({
 app.decorate(
     'authenticate',
     async (req: FastifyRequest, reply: FastifyReply) => {
-        // const token = req.cookies.access_token;
-        const token = req.headers.authorization.split(' ')[1];
+        const token = req.cookies.access_token;
         if (!token) {
             return reply.status(401).send({ message: 'Authentication required' });
         }
@@ -28,10 +27,16 @@ app.decorate(
 
 app.register(fjwt, { secret: 'supersecretcode-CHANGE_THIS-USE_ENV_FILE' });
 
-app.addHook('preHandler', (req: FastifyRequest, _, next) => {
+app.addHook('preHandler', (req: FastifyRequest, reply: FastifyReply, next) => {
     req.jwt = app.jwt;
     req.pg = app.pg;
+
     return next();
+});
+
+app.register(cors, { 
+    origin: true,
+    credentials: true
 });
 
 app.register(fCookie, {
@@ -41,10 +46,6 @@ app.register(fCookie, {
 
 app.register(pg, {
     connectionString: "postgres://postgres:root@localhost/raffle",
-});
-
-app.register(cors, { 
-    origin: true
 });
 
 app.register(authRoutes, { prefix: 'api/v1' });

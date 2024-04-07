@@ -7,8 +7,6 @@ import { Feed } from "@/pages/feed";
 import { Profile } from "@/pages/profile";
 import { Redirect } from "@/pages/redirect";
 
-import { ProtectedRoute } from "../entities/auth/protected-route";
-
 interface Route {
   path: string;
   element: ReactNode;
@@ -17,43 +15,23 @@ interface Route {
 export const routes: Route[] = [
   {
     path: "/feed",
-    element: (
-      <ProtectedRoute>
-        <Feed />
-      </ProtectedRoute>
-    ),
+    element: <Feed />,
   },
   {
     path: "/profile",
-    element: (
-      <ProtectedRoute>
-        <Profile />
-      </ProtectedRoute>
-    ),
+    element: <Profile />,
   },
   {
     path: "/ads/create",
-    element: (
-      <ProtectedRoute>
-        <AdsEdit />
-      </ProtectedRoute>
-    ),
+    element: <AdsEdit />,
   },
   {
     path: "/ads/edit/:id",
-    element: (
-      <ProtectedRoute>
-        <AdsEdit />
-      </ProtectedRoute>
-    ),
+    element: <AdsEdit />,
   },
   {
     path: "/ads/read/:id",
-    element: (
-      <ProtectedRoute>
-        <AdsRead />
-      </ProtectedRoute>
-    ),
+    element: <AdsRead />,
   },
   {
     path: "*",

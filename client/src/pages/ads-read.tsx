@@ -3,13 +3,21 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button, Image } from "antd";
 
 import { useGetAdsByIdMutation } from "@/entities/adsApi";
-import { useGetUserProfileQuery } from "@/entities/usersApi";
+import { useLazyGetUserProfileQuery } from "@/entities/usersApi";
 
 export const AdsRead: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
-  const { data: profile } = useGetUserProfileQuery();
-  const [getAdsById, { data: ads, isLoading }] = useGetAdsByIdMutation();
+  const [triggerGetUser, { data: profile }] = useLazyGetUserProfileQuery();
+  const [getAdsById, { data: ads, isLoading, isError }] = useGetAdsByIdMutation();
+
+  if (isError) {
+    navigate("/signin");
+  }
+
+  useEffect(() => {
+    triggerGetUser();
+  }, []);
 
   useEffect(() => {
     params?.id && getAdsById(params.id);

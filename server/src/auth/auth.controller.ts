@@ -43,17 +43,15 @@ export async function login(req: FastifyRequest<{
             message: 'Invalid email or password',
         });
     }
-
-
     const payload = {
         id: user.id,
         login: user.login,
     };
-    const token = req.jwt.sign(payload, { expiresIn: 36000 });
+    const token = req.jwt.sign(payload);
     reply.setCookie('access_token', token, {
         path: '/',
-        httpOnly: true,
-        secure: true,
+        sameSite: 'none',
+        secure: true
     });
     return { accessToken: token };
 
