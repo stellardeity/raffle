@@ -8,10 +8,7 @@ export const Card: React.FC<any> = ({ data }: any) => {
 
   return (
     <AntdCard
-      actions={[
-        <EditOutlined onClick={() => navigate("/ads/edit")} key="edit" />,
-        <EllipsisOutlined onClick={() => navigate("/ads/read")} key="ellipsis" />,
-      ]}
+      onClick={() => navigate(`/ads/read/${data.id}`)}
       cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
     >
       <Flex justify="space-between" align="end">

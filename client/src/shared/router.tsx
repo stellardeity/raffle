@@ -40,7 +40,7 @@ export const routes: Route[] = [
     ),
   },
   {
-    path: "/ads/edit",
+    path: "/ads/edit/:id",
     element: (
       <ProtectedRoute>
         <AdsEdit />
@@ -48,7 +48,7 @@ export const routes: Route[] = [
     ),
   },
   {
-    path: "/ads/read",
+    path: "/ads/read/:id",
     element: (
       <ProtectedRoute>
         <AdsRead />

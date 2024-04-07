@@ -6,10 +6,18 @@ export const usersApi = createApi({
   reducerPath: "users",
   baseQuery,
   endpoints: (builder) => ({
-    getUsersProfile: builder.query<any, void>({
+    getUserProfile: builder.query<any, void>({
       query: () => "/users/profile",
+    }),
+    getAdsProfile: builder.mutation<any, string>({
+      query(id) {
+        return {
+          url: `/ads/profile?id=${id}`,
+          method: "POST",
+        };
+      },
     }),
   }),
 });
 
-export const { useGetUsersProfileQuery } = usersApi;
+export const { useGetUserProfileQuery, useGetAdsProfileMutation } = usersApi;

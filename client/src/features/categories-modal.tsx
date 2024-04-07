@@ -16,13 +16,14 @@ export const CatigoriesModal: React.FC<any> = ({ open, setIsModalOpen }) => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+
   if (isLoading) {
     return null;
   }
 
   return (
     <Modal onCancel={handleCancel} footer={[<div key="1"></div>]} title="Выберите категорию: " open={open}>
-      {categories.map((item) => (
+      {categories?.map((item) => (
         <h2 key={item.id} style={{ cursor: "pointer" }} onClick={() => handleOk(item.title)}>
           {item.title}
         </h2>

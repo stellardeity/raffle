@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Col, Row } from "antd";
 
-import { useGetAdsQuery } from "@/entities/adsApi";
-import { useGetUsersProfileQuery } from "@/entities/usersApi";
+import { useGetAdsProfileMutation, useGetUserProfileQuery } from "@/entities/usersApi";
 import { Card } from "@/shared/ui/card";
 
 export const Profile = () => {
-  const { data: ads } = useGetAdsQuery();
-  const { data: profile } = useGetUsersProfileQuery();
+  const { data: profile } = useGetUserProfileQuery();
+  const [getAdsProfile, { data: ads }] = useGetAdsProfileMutation();
+
+  useEffect(() => {
+    profile?.id && getAdsProfile(profile?.id);
+  }, [profile]);
 
   return (
     <Row>
@@ -18,7 +21,7 @@ export const Profile = () => {
           {!ads ? (
             <p>Иди нахуй</p>
           ) : (
-            ads.map((data: any) => (
+            ads?.map((data: any) => (
               <Col key={data.id} className="gutter-row" span={8}>
                 <Card data={data} />
               </Col>
@@ -28,9 +31,11 @@ export const Profile = () => {
       </Col>
       <Col span={6} pull={18}>
         <Avatar size={264} icon={<UserOutlined />} />
-        <h1 style={{ marginTop: "20px" }}>Maria Berestovaya</h1>
-        <h3>creator</h3>
-        <p style={{ marginTop: "10px" }}>You already know who I am</p>
+        <h1 style={{ marginTop: "20px" }}>
+          {profile?.firstname} {profile?.lastname}
+        </h1>
+        <h3>{profile?.login}</h3>
+        <p style={{ marginTop: "10px" }}>{profile?.bio}</p>
       </Col>
     </Row>
   );

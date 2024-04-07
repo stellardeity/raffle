@@ -46,25 +46,38 @@ CREATE TABLE public.ads (
     updated_at timestamp without time zone DEFAULT now(),
     default_price integer,
     rate integer,
-    category_id uuid
+    category_id uuid,
+    user_id uuid
 );
 
 
 ALTER TABLE public.ads OWNER TO postgres;
 
 --
--- Name: ads_fields; Type: TABLE; Schema: public; Owner: postgres
+-- Name: ads_attributes; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.ads_fields (
+CREATE TABLE public.ads_attributes (
     id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-    category_id uuid,
-    field_value character varying(255),
-    field_name character varying(255)
+    ads_id uuid,
+    attribute_id uuid,
+    value character varying(255)
 );
 
 
-ALTER TABLE public.ads_fields OWNER TO postgres;
+ALTER TABLE public.ads_attributes OWNER TO postgres;
+
+--
+-- Name: attributes; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.attributes (
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    title character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.attributes OWNER TO postgres;
 
 --
 -- Name: categories; Type: TABLE; Schema: public; Owner: postgres
@@ -77,6 +90,19 @@ CREATE TABLE public.categories (
 
 
 ALTER TABLE public.categories OWNER TO postgres;
+
+--
+-- Name: category_attributes; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.category_attributes (
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    category_id uuid,
+    attribute_id uuid
+);
+
+
+ALTER TABLE public.category_attributes OWNER TO postgres;
 
 --
 -- Name: favorites; Type: TABLE; Schema: public; Owner: postgres
@@ -127,7 +153,8 @@ CREATE TABLE public.users (
     lastname character varying(255),
     login character varying(255) NOT NULL,
     bio character varying(255),
-    email character varying(255)
+    email character varying(255),
+    password character varying(255)
 );
 
 
@@ -137,19 +164,32 @@ ALTER TABLE public.users OWNER TO postgres;
 -- Data for Name: ads; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.ads (id, title, places, created_at, updated_at, default_price, rate, category_id) FROM stdin;
-8187901a-7460-4b49-8f3e-f8ae39e82ef5	Fender	200	2024-04-04 12:12:01.001974	2024-04-04 12:12:01.001974	60000	500	baeac11b-b3be-4328-a403-fc0b32feaa5b
-11c628c4-16a5-4d2c-9fe6-251289157e8b	Honda cb600f	1000	2024-04-04 12:12:47.826081	2024-04-04 12:12:47.826081	360000	1000	fc1ad0ef-6507-4bad-8eac-5db5471ca61e
+COPY public.ads (id, title, places, created_at, updated_at, default_price, rate, category_id, user_id) FROM stdin;
+8187901a-7460-4b49-8f3e-f8ae39e82ef5	Fender	200	2024-04-04 12:12:01.001974	2024-04-04 12:12:01.001974	60000	500	baeac11b-b3be-4328-a403-fc0b32feaa5b	dd8d8307-a8ee-4c02-b3b9-d7f01fbb5c59
+0e9e5825-6765-42ed-bd30-a54f3cb717ba	racer storm 250	\N	2024-04-07 14:55:48.9182	2024-04-07 14:55:48.9182	\N	\N	fc1ad0ef-6507-4bad-8eac-5db5471ca61e	a5176754-e67b-46c7-8853-9a4e52169651
 \.
 
 
 --
--- Data for Name: ads_fields; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: ads_attributes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.ads_fields (id, category_id, field_value, field_name) FROM stdin;
-65a75d10-1e72-4417-bfa5-17180d16b526	baeac11b-b3be-4328-a403-fc0b32feaa5b	Fender	company
-dad4fad8-5d8b-40f2-a595-8544fa6fe04c	baeac11b-b3be-4328-a403-fc0b32feaa5b	black	color
+COPY public.ads_attributes (id, ads_id, attribute_id, value) FROM stdin;
+df2945d4-87e6-4ed9-86f9-722ac0d733b5	0e9e5825-6765-42ed-bd30-a54f3cb717ba	d7dfeb57-65c3-42d5-b118-2e99f3ba8b30	black
+50cb1114-4f51-42d4-9161-f24ca8822803	0e9e5825-6765-42ed-bd30-a54f3cb717ba	446244a8-b6f6-4e84-9111-1be49f109fc1	160
+0280d24b-2727-4d08-82bc-52566848f5e8	8187901a-7460-4b49-8f3e-f8ae39e82ef5	62f8fb52-c15d-48b8-8a85-42058783d3a4	fender
+66e3684f-475b-42c8-b623-2be676a45d59	8187901a-7460-4b49-8f3e-f8ae39e82ef5	d7dfeb57-65c3-42d5-b118-2e99f3ba8b30	red
+\.
+
+
+--
+-- Data for Name: attributes; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.attributes (id, title) FROM stdin;
+d7dfeb57-65c3-42d5-b118-2e99f3ba8b30	color
+446244a8-b6f6-4e84-9111-1be49f109fc1	speed
+62f8fb52-c15d-48b8-8a85-42058783d3a4	company
 \.
 
 
@@ -160,6 +200,18 @@ dad4fad8-5d8b-40f2-a595-8544fa6fe04c	baeac11b-b3be-4328-a403-fc0b32feaa5b	black	
 COPY public.categories (id, title) FROM stdin;
 baeac11b-b3be-4328-a403-fc0b32feaa5b	Guitar
 fc1ad0ef-6507-4bad-8eac-5db5471ca61e	Transport
+\.
+
+
+--
+-- Data for Name: category_attributes; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.category_attributes (id, category_id, attribute_id) FROM stdin;
+5196a151-3a57-4877-afd0-5821289421da	fc1ad0ef-6507-4bad-8eac-5db5471ca61e	d7dfeb57-65c3-42d5-b118-2e99f3ba8b30
+1790ee46-59aa-42ac-b2d5-b6548c4f5a6a	fc1ad0ef-6507-4bad-8eac-5db5471ca61e	446244a8-b6f6-4e84-9111-1be49f109fc1
+3281fda7-e993-4d18-9750-026505035755	baeac11b-b3be-4328-a403-fc0b32feaa5b	62f8fb52-c15d-48b8-8a85-42058783d3a4
+4fd1fe63-dde5-4817-ac59-23dc9e164736	baeac11b-b3be-4328-a403-fc0b32feaa5b	d7dfeb57-65c3-42d5-b118-2e99f3ba8b30
 \.
 
 
@@ -184,7 +236,6 @@ COPY public.followers (followerid, followeeid, id) FROM stdin;
 --
 
 COPY public.settings (id, user_id, theme) FROM stdin;
-2455ba75-a906-465d-815b-04eaf5667b2d	199f0e19-6a94-4564-9392-648a5e0567b8	white
 \.
 
 
@@ -192,18 +243,18 @@ COPY public.settings (id, user_id, theme) FROM stdin;
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.users (id, firstname, lastname, login, bio, email) FROM stdin;
-199f0e19-6a94-4564-9392-648a5e0567b8	Maria	Berestovaya	creator	You already know who I am	\N
-d805000e-3c51-4a04-8428-535b1876f711	Ivan	Ivanov	ivanov56	\N	\N
+COPY public.users (id, firstname, lastname, login, bio, email, password) FROM stdin;
+a5176754-e67b-46c7-8853-9a4e52169651	Ksu	Turaeva	alatfar	\N	\N	$2b$10$z5k7YOQ5D1Rud8rr.0rNOeciuFAFWnHVwFR485A7XP197w.0/ow7y
+dd8d8307-a8ee-4c02-b3b9-d7f01fbb5c59	Maria	Berestovaya	creator	You already know who I am	\N	$2b$10$aHGA8qVsGgRlRlpQBMM11eqR5eTZ3pAPAbA.dXBA1qDE3meQ/ak.W
 \.
 
 
 --
--- Name: ads_fields ads_fields_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: ads_attributes ads_attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.ads_fields
-    ADD CONSTRAINT ads_fields_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.ads_attributes
+    ADD CONSTRAINT ads_attributes_pkey PRIMARY KEY (id);
 
 
 --
@@ -215,11 +266,27 @@ ALTER TABLE ONLY public.ads
 
 
 --
+-- Name: attributes attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.attributes
+    ADD CONSTRAINT attributes_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: categories categories_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.categories
     ADD CONSTRAINT categories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: category_attributes category_attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.category_attributes
+    ADD CONSTRAINT category_attributes_pkey PRIMARY KEY (id);
 
 
 --
@@ -255,6 +322,22 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: ads_attributes ads_attributes_ads_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ads_attributes
+    ADD CONSTRAINT ads_attributes_ads_id_fkey FOREIGN KEY (ads_id) REFERENCES public.ads(id);
+
+
+--
+-- Name: ads_attributes ads_attributes_attribute_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ads_attributes
+    ADD CONSTRAINT ads_attributes_attribute_id_fkey FOREIGN KEY (attribute_id) REFERENCES public.attributes(id);
+
+
+--
 -- Name: ads ads_category_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -263,11 +346,27 @@ ALTER TABLE ONLY public.ads
 
 
 --
--- Name: ads_fields ads_fields_categoryid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: ads ads_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.ads_fields
-    ADD CONSTRAINT ads_fields_categoryid_fkey FOREIGN KEY (category_id) REFERENCES public.categories(id);
+ALTER TABLE ONLY public.ads
+    ADD CONSTRAINT ads_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: category_attributes category_attributes_attribute_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.category_attributes
+    ADD CONSTRAINT category_attributes_attribute_id_fkey FOREIGN KEY (attribute_id) REFERENCES public.attributes(id);
+
+
+--
+-- Name: category_attributes category_attributes_category_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.category_attributes
+    ADD CONSTRAINT category_attributes_category_id_fkey FOREIGN KEY (category_id) REFERENCES public.categories(id);
 
 
 --

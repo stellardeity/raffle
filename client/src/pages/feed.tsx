@@ -11,7 +11,7 @@ export const Feed = () => {
       {!ads ? (
         <p>Иди нахуй</p>
       ) : (
-        ads.map((data: any) => (
+        ads?.map((data: any) => (
           <Col key={data.id} className="gutter-row" span={6}>
             <Card data={data} />
           </Col>

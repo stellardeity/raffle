@@ -9,9 +9,16 @@ export const adsApi = createApi({
     getAds: builder.query<any, void>({
       query: () => "/ads",
     }),
-
     getCategories: builder.query<any, void>({
       query: () => "/ads/categories",
+    }),
+    getAdsById: builder.mutation<any, string>({
+      query(id) {
+        return {
+          url: `/ads?id=${id}`,
+          method: "POST",
+        };
+      },
     }),
     getFields: builder.mutation<any, { title: string }>({
       query(data) {
@@ -25,4 +32,4 @@ export const adsApi = createApi({
   }),
 });
 
-export const { useGetAdsQuery, useGetFieldsMutation, useGetCategoriesQuery } = adsApi;
+export const { useGetAdsQuery, useGetAdsByIdMutation, useGetFieldsMutation, useGetCategoriesQuery } = adsApi;
