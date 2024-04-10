@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Image } from "antd";
 
-import { useGetAdsByIdMutation } from "@/entities/adsApi";
+import { useFollowAdsMutation, useGetAdsByIdMutation } from "@/entities/adsApi";
 import { useLazyGetUserProfileQuery } from "@/entities/usersApi";
 
 export const AdsRead: React.FC = () => {
@@ -10,6 +10,7 @@ export const AdsRead: React.FC = () => {
   const navigate = useNavigate();
   const [triggerGetUser, { data: profile }] = useLazyGetUserProfileQuery();
   const [getAdsById, { data: ads, isLoading, isError }] = useGetAdsByIdMutation();
+  const [followAds] = useFollowAdsMutation();
 
   if (isError) {
     navigate("/signin");
@@ -40,6 +41,7 @@ export const AdsRead: React.FC = () => {
         );
       })}
       {ads?.user_id === profile?.id && <Button onClick={() => navigate(`/ads/edit/${ads.id}`)}>Изменить</Button>}
+      {ads?.user_id !== profile?.id && <Button onClick={() => followAds(ads.id)}>Рафл</Button>}
     </>
   );
 };

@@ -5,12 +5,12 @@ import { BrowserRouter } from "react-router-dom";
 import { Route, Routes } from "react-router-dom";
 import { ConfigProvider } from "antd";
 
-import { routes } from "@/shared/router";
 import { MainLayout } from "@/shared/ui/layout";
 
 import { SignIn } from "./pages/sign-in";
-import { store } from "./shared/store";
-import { theme } from "./shared/theme";
+import { routes } from "./shared/lib/router";
+import { store } from "./app/store";
+import { theme } from "./shared/ui/theme";
 import reportWebVitals from "./reportWebVitals";
 
 import "./index.css";

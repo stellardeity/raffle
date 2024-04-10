@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 
-import { baseQuery } from "@/shared/base-query";
+import { baseQuery } from "@/shared/lib/base-query";
 
 export const adsApi = createApi({
   reducerPath: "ads",
@@ -20,6 +20,14 @@ export const adsApi = createApi({
         };
       },
     }),
+    followAds: builder.mutation<any, string>({
+      query(id) {
+        return {
+          url: `/ads/followers?id=${id}`,
+          method: "POST",
+        };
+      },
+    }),
     getFields: builder.mutation<any, { title: string }>({
       query(data) {
         return {
@@ -32,4 +40,10 @@ export const adsApi = createApi({
   }),
 });
 
-export const { useGetAdsQuery, useGetAdsByIdMutation, useGetFieldsMutation, useGetCategoriesQuery } = adsApi;
+export const {
+  useGetAdsQuery,
+  useGetAdsByIdMutation,
+  useFollowAdsMutation,
+  useGetFieldsMutation,
+  useGetCategoriesQuery,
+} = adsApi;

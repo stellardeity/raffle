@@ -29,7 +29,7 @@ export async function getAdsProfile(req: FastifyRequest<{Querystring: {id: strin
     const client = await req.pg.connect();
     const { id } = req.query;
     const { rows: ads } = await client.query(`
-    SELECT P.id, P.title, C.title AS category,
+    SELECT P.id, P.rate, P.default_price, P.places, P.title, C.title AS category,
     JSONB_AGG(jsonb_build_object('name', A.title, 'value', PA.value)) AS attributes
     FROM ads P
     JOIN categories C ON P.category_id = C.id
@@ -53,9 +53,27 @@ export async function getCategories(req: FastifyRequest , reply: FastifyReply) {
 
 export async function getFields(req: FastifyRequest<{Body: {title: string}}> , reply: FastifyReply) {
     const { title } = req.body;
-
     const client = await req.pg.connect();
-    const { rows: fields } = await client.query(` select a.title from categories c join category_attributes ca on ca.category_id = c.id join attributes a on a.id = ca.attribute_id where c.title = '${title}';`);
+    const { rows: fields } = await client.query(`
+    SELECT a.title FROM categories c 
+    JOIN category_attributes ca ON ca.category_id = c.id 
+    JOIN attributes a ON a.id = ca.attribute_id 
+    WHERE c.title = '${title}';
+    `);
     client.release();
     return reply.code(200).send(fields);
+}
+
+
+export async function addFollower(req: FastifyRequest<{Querystring: {id: string}}> , reply: FastifyReply) {
+    const { id } = req.query;
+
+    const decodedToken = req.jwt.verify(req.cookies.access_token);
+
+    const client = await req.pg.connect();
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    await client.query(`INSERT INTO ads_followers (ads_id, user_id) VALUES ('${id}', '${decodedToken.id}');`);
+    client.release();
+    return reply.code(204).send();
 }

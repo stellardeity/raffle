@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Col, Row } from "antd";
 
 import { useGetAdsProfileMutation, useLazyGetUserProfileQuery } from "@/entities/usersApi";
 import { Card } from "@/shared/ui/card";
 
 export const Profile = () => {
+  const { t } = useTranslation();
   const [trggerGetUser, { data: profile, isError }] = useLazyGetUserProfileQuery();
   const [getAdsProfile, { data: ads }] = useGetAdsProfileMutation();
   const navigate = useNavigate();
@@ -24,28 +25,22 @@ export const Profile = () => {
   }, [profile]);
 
   return (
-    <Row>
-      <Col span={18} push={6}>
-        <h2 style={{ marginBottom: "20px" }}>Вашы рафлы:</h2>
-        <Row gutter={[16, 24]}>
-          {!ads ? (
-            <p>Иди нахуй</p>
-          ) : (
-            ads?.map((data: any) => (
-              <Col key={data.id} className="gutter-row" span={8}>
-                <Card data={data} />
-              </Col>
-            ))
-          )}
-        </Row>
-      </Col>
-      <Col span={6} pull={18}>
-        <Avatar size={264} icon={<UserOutlined />} />
+    <Row gutter={[100, 0]}>
+      <Col xs={{ flex: "100%" }} sm={{ flex: "50%" }} md={{ flex: "40%" }} lg={{ flex: "20%" }} xl={{ flex: "10%" }}>
+        <Avatar size={264} src={profile?.photo} />
         <h1 style={{ marginTop: "20px" }}>
           {profile?.firstname} {profile?.lastname}
         </h1>
         <h3>{profile?.login}</h3>
         <p style={{ marginTop: "10px" }}>{profile?.bio}</p>
+      </Col>
+      <Col xs={{ flex: "100%" }} sm={{ flex: "50%" }} md={{ flex: "40%" }} lg={{ flex: "20%" }} xl={{ flex: "10%" }}>
+        <h2 style={{ marginBottom: "20px" }}>{t("Your raffles")}:</h2>
+        {!ads || !ads.length ? (
+          <div>{t("Nothing was found")}</div>
+        ) : (
+          ads?.map((data: any) => <Card key={data.id} data={data} />)
+        )}
       </Col>
     </Row>
   );

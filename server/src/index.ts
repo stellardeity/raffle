@@ -1,16 +1,35 @@
 import Fastify, { FastifyReply, FastifyRequest } from "fastify";
 import pg from "@fastify/postgres";
 import cors from '@fastify/cors';
-import { authRoutes } from "./auth/auth.route";
 import fjwt, { FastifyJWT } from '@fastify/jwt';
 import fCookie from '@fastify/cookie';
+import multipart from '@fastify/multipart';
+import fastifyStatic from "@fastify/static";
+
 import { adsRoutes } from "./ads/ads.route";
 import { usersRoutes } from "./users/users.route";
+import { authRoutes } from "./auth/auth.route";
+
+import * as path from "path";
 
 const PORT = 8080;
 
 const app = Fastify({
     logger: true,
+});
+
+app.register(multipart);
+
+app.register(fastifyStatic, {
+    root: path.join(__dirname, "../uploads"),
+    prefix: "/uploads/",
+});
+
+app.addHook('preHandler', (req: FastifyRequest, reply: FastifyReply, next) => {
+    req.jwt = app.jwt;
+    req.pg = app.pg;
+
+    return next();
 });
 
 app.decorate(
@@ -27,12 +46,6 @@ app.decorate(
 
 app.register(fjwt, { secret: 'supersecretcode-CHANGE_THIS-USE_ENV_FILE' });
 
-app.addHook('preHandler', (req: FastifyRequest, reply: FastifyReply, next) => {
-    req.jwt = app.jwt;
-    req.pg = app.pg;
-
-    return next();
-});
 
 app.register(cors, { 
     origin: true,

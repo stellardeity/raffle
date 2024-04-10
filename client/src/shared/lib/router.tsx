@@ -6,6 +6,7 @@ import { AdsRead } from "@/pages/ads-read";
 import { Feed } from "@/pages/feed";
 import { Profile } from "@/pages/profile";
 import { Redirect } from "@/pages/redirect";
+import { Settings } from "@/pages/settings";
 
 interface Route {
   path: string;
@@ -20,6 +21,10 @@ export const routes: Route[] = [
   {
     path: "/profile",
     element: <Profile />,
+  },
+  {
+    path: "/settings",
+    element: <Settings />,
   },
   {
     path: "/ads/create",

@@ -44,13 +44,13 @@ export const SignIn: React.FC = () => {
     <Flex align="center" justify="center" style={{ height: "100vh" }}>
       <Modal title="Create a new user?" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}></Modal>
       <Form
-        style={{ textAlign: "center", width: "400px" }}
+        style={{ textAlign: "center", width: "340px" }}
         name="normal_login"
         className="login-form"
         initialValues={{ remember: true }}
         onFinish={onFinish}
       >
-        <Image preview={false} width={300} src={logo} style={{ marginBottom: "40px" }} />
+        <Image preview={false} width={200} src={logo} style={{ marginBottom: "40px" }} />
         <Form.Item name="login" rules={[{ required: true, message: "Please input your Username!" }]}>
           <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" size="large" />
         </Form.Item>
