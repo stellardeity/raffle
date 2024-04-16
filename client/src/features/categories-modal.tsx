@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Modal } from "antd";
 
 import { useGetCategoriesQuery } from "@/entities/adsApi";
+import { grayColor } from "@/shared/ui/theme";
 
 export const CatigoriesModal: React.FC<any> = ({ open, setIsModalOpen }) => {
   const navigate = useNavigate();

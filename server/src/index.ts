@@ -1,14 +1,17 @@
 import Fastify, { FastifyReply, FastifyRequest } from "fastify";
-import pg from "@fastify/postgres";
-import cors from '@fastify/cors';
-import fjwt, { FastifyJWT } from '@fastify/jwt';
-import fCookie from '@fastify/cookie';
-import multipart from '@fastify/multipart';
+import fastifyPg from "@fastify/postgres";
+import fastifyCors from '@fastify/cors';
+import fastifyJwt, { FastifyJWT } from '@fastify/jwt';
+import fastifyCookie from '@fastify/cookie';
+import fastifyMultipart from '@fastify/multipart';
 import fastifyStatic from "@fastify/static";
+import fastifyRateLimit from "@fastify/rate-limit";
+import fastifyCaching from '@fastify/caching';
 
 import { adsRoutes } from "./ads/ads.route";
 import { usersRoutes } from "./users/users.route";
 import { authRoutes } from "./auth/auth.route";
+
 
 import * as path from "path";
 
@@ -18,7 +21,17 @@ const app = Fastify({
     logger: true,
 });
 
-app.register(multipart);
+app.register(
+    fastifyCaching,
+    { privacy: fastifyCaching.privacy.NOCACHE },
+);
+
+app.register(fastifyRateLimit, {
+    max: 100,
+    timeWindow: '1 minute'
+});
+
+app.register(fastifyMultipart);
 
 app.register(fastifyStatic, {
     root: path.join(__dirname, "../uploads"),
@@ -44,20 +57,20 @@ app.decorate(
     },
 );
 
-app.register(fjwt, { secret: 'supersecretcode-CHANGE_THIS-USE_ENV_FILE' });
+app.register(fastifyJwt, { secret: 'supersecretcode-CHANGE_THIS-USE_ENV_FILE' });
 
 
-app.register(cors, { 
+app.register(fastifyCors, { 
     origin: true,
     credentials: true
 });
 
-app.register(fCookie, {
+app.register(fastifyCookie, {
     secret: 'some-secret-key',
     hook: 'preHandler',
 });
 
-app.register(pg, {
+app.register(fastifyPg, {
     connectionString: "postgres://postgres:root@localhost/raffle",
 });
 

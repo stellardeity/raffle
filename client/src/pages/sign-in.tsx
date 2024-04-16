@@ -3,12 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Flex, Form, Image, Input, Modal } from "antd";
 
-import { useLoginMutation, useRegisterMutation } from "@/entities/auth/authApi";
+import { useLoginMutation, useRegisterMutation } from "@/entities/authApi";
+import { useLazyGetUserProfileQuery } from "@/entities/usersApi";
 import logo from "@/logo.svg";
 
 export const SignIn: React.FC = () => {
-  const [login, { data, isError: isErrorLogin }] = useLoginMutation();
+  const [login, { isError: isErrorLogin }] = useLoginMutation();
   const [register] = useRegisterMutation();
+  const [trggerGetUser] = useLazyGetUserProfileQuery();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [values, setValues] = useState<{ login: string; password: string }>();
   const navigate = useNavigate();
@@ -33,6 +35,10 @@ export const SignIn: React.FC = () => {
 
     setValues(values);
   };
+
+  useEffect(() => {
+    trggerGetUser();
+  }, []);
 
   useEffect(() => {
     if (isErrorLogin) {

@@ -33,7 +33,7 @@ export const AdsEdit: React.FC = () => {
     return null;
   }
   return (
-    <Form labelCol={{ span: 4 }} wrapperCol={{ span: 14 }} layout="horizontal" style={{ maxWidth: 600 }}>
+    <Form labelCol={{ span: 4 }} wrapperCol={{ span: 14 }} layout="vertical" style={{ maxWidth: 600 }}>
       <Form.Item valuePropName="fileList" getValueFromEvent={normFile}>
         <Upload action="/upload.do" listType="picture-card">
           <button style={{ border: 0, background: "none" }} type="button">

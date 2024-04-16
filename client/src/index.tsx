@@ -7,9 +7,9 @@ import { ConfigProvider } from "antd";
 
 import { MainLayout } from "@/shared/ui/layout";
 
+import { store } from "./app/store";
 import { SignIn } from "./pages/sign-in";
 import { routes } from "./shared/lib/router";
-import { store } from "./app/store";
 import { theme } from "./shared/ui/theme";
 import reportWebVitals from "./reportWebVitals";
 

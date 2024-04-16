@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import { adsApi } from "@/entities/adsApi";
-import { authApi } from "@/entities/auth/authApi";
+import { authApi } from "@/entities/authApi";
 import { usersApi } from "@/entities/usersApi";
 
 export const store = configureStore({

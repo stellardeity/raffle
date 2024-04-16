@@ -8,7 +8,7 @@ import { Header as AntdHeader } from "antd/es/layout/layout";
 
 import { useLazyGetUserProfileQuery } from "@/entities/usersApi";
 import logo from "@/logo.svg";
-import useWindowDimensions from "@/shared/hooks/useWindowDimensions";
+import useWindowDimensions from "@/shared/hooks/use-window-dimensions";
 
 const { Search } = Input;
 

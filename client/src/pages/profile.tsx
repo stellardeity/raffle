@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Avatar, Col, Row } from "antd";
+import { Avatar, Button, Col, Row } from "antd";
 
 import { useGetAdsProfileMutation, useLazyGetUserProfileQuery } from "@/entities/usersApi";
 import { Card } from "@/shared/ui/card";
@@ -29,10 +29,11 @@ export const Profile = () => {
       <Col xs={{ flex: "100%" }} sm={{ flex: "50%" }} md={{ flex: "40%" }} lg={{ flex: "20%" }} xl={{ flex: "10%" }}>
         <Avatar size={264} src={profile?.photo} />
         <h1 style={{ marginTop: "20px" }}>
-          {profile?.firstname} {profile?.lastname}
+          {profile?.first_name} {profile?.last_name}
         </h1>
         <h3>{profile?.login}</h3>
         <p style={{ marginTop: "10px" }}>{profile?.bio}</p>
+        <Button style={{ marginTop: "10px" }}>{t("Edit")}</Button>
       </Col>
       <Col xs={{ flex: "100%" }} sm={{ flex: "50%" }} md={{ flex: "40%" }} lg={{ flex: "20%" }} xl={{ flex: "10%" }}>
         <h2 style={{ marginBottom: "20px" }}>{t("Your raffles")}:</h2>

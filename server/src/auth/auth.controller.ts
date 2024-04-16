@@ -58,7 +58,11 @@ export async function login(req: FastifyRequest<{
 }
 
 export async function logout(req: FastifyRequest, reply: FastifyReply) {
-    reply.clearCookie('access_token');
+    reply.clearCookie('access_token', {
+        path: '/',
+        sameSite: 'none',
+        secure: true
+    });
     return reply.send({ message: 'Logout successful' });
 }
 

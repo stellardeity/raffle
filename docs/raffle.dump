@@ -149,8 +149,8 @@ ALTER TABLE public.settings OWNER TO postgres;
 
 CREATE TABLE public.users (
     id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-    firstname character varying(255),
-    lastname character varying(255),
+    first_name character varying(255),
+    last_name character varying(255),
     login character varying(255) NOT NULL,
     bio character varying(255),
     email character varying(255),
@@ -243,7 +243,7 @@ COPY public.settings (id, user_id, theme) FROM stdin;
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.users (id, firstname, lastname, login, bio, email, password) FROM stdin;
+COPY public.users (id, first_name, last_name, login, bio, email, password) FROM stdin;
 a5176754-e67b-46c7-8853-9a4e52169651	Ksu	Turaeva	alatfar	\N	\N	$2b$10$z5k7YOQ5D1Rud8rr.0rNOeciuFAFWnHVwFR485A7XP197w.0/ow7y
 dd8d8307-a8ee-4c02-b3b9-d7f01fbb5c59	Maria	Berestovaya	creator	You already know who I am	\N	$2b$10$aHGA8qVsGgRlRlpQBMM11eqR5eTZ3pAPAbA.dXBA1qDE3meQ/ak.W
 \.
