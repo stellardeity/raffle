@@ -7,19 +7,24 @@ import fastifyMultipart from '@fastify/multipart';
 import fastifyStatic from "@fastify/static";
 import fastifyRateLimit from "@fastify/rate-limit";
 import fastifyCaching from '@fastify/caching';
+import * as client from "prom-client";
+import  { activeUsersPerCategoryMetric } from './metrics';
 
-import { adsRoutes } from "./ads/ads.route";
-import { usersRoutes } from "./users/users.route";
-import { authRoutes } from "./auth/auth.route";
+import { adsRoutes } from "./ads/ads.route.js";
+import { usersRoutes } from "./users/users.route.js";
+import { authRoutes } from "./auth/auth.route.js";
 
 
 import * as path from "path";
 
-const PORT = 8080;
+const PORT = 9200;
 
 const app = Fastify({
     logger: true,
 });
+
+const registry = new client.Registry();
+activeUsersPerCategoryMetric(registry);
 
 app.register(
     fastifyCaching,
@@ -78,9 +83,16 @@ app.register(authRoutes, { prefix: 'api/v1' });
 app.register(adsRoutes, { prefix: 'api/v1/ads' });
 app.register(usersRoutes, { prefix: 'api/v1/users' });
 
-app.get('/healthcheck', (req, res) => {
-    res.send({ message: 'Success' });
+app.get('/healthcheck', (req, reply: FastifyReply) => {
+    reply.send({ message: 'Success' });
 });
+
+app.get('/metrics', async (req: FastifyRequest, reply: FastifyReply) => {
+    reply.header('Content-Type', registry.contentType);
+    const metrics = registry.metrics();
+    reply.send(await metrics);
+});
+
 
 const listeners = ['SIGINT', 'SIGTERM'];
 listeners.forEach((signal) => {
