@@ -76,7 +76,7 @@ app.register(fastifyCookie, {
 });
 
 app.register(fastifyPg, {
-    connectionString: "postgres://postgres:root@localhost/raffle",
+    connectionString: "postgres://postgres:root@postgres:5432/raffle",
 });
 
 app.register(authRoutes, { prefix: 'api/v1' });

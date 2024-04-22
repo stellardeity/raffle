@@ -8,6 +8,8 @@ services:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
+    networks:
+      - postgres-network
     ports:
       - '9090:9090'
   grafana:
@@ -18,9 +20,11 @@ services:
       - ./grafana/config.ini:/etc/grafana/config.ini
       - ./grafana/dashboards:/var/lib/grafana/dashboards
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=illchangeitanyway
+      - GF_SECURITY_ADMIN_PASSWORD=root
     depends_on:
       - prometheus
+    networks:
+      - postgres-network
     ports:
       - '3000:3000'
   app:
@@ -30,8 +34,29 @@ services:
     ports:
       - '9200:9200'
     command: './dist/index.js'
-
-
+    networks:
+      - postgres-network
+    depends_on:
+      - postgres
+    restart: always
+  postgres:
+    container_name: postgres
+    image: postgres:12
+    networks:
+      - postgres-network
+    environment:
+      - POSTGRES_PASSWORD=root
+    ports:
+      - 5433:5432
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+networks:
+  postgres-network:
+    driver: bridge
 volumes:
   prometheus_data: {}
   grafana_data: {}
+  pgdata:
+
