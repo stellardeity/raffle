@@ -1,0 +1,1 @@
+export const fileNameGenerator = (today: Date) => `${today.getDate()}${today.getMonth().toString().padStart(2, '0')}${today.getFullYear()}_${today.getHours().toString().padStart(2, '0')}${today.getMinutes().toString().padStart(2, '0')}${today.getSeconds().toString().padStart(2, '0')}`;

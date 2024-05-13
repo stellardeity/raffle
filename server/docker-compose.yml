@@ -20,7 +20,7 @@ services:
       - ./grafana/config.ini:/etc/grafana/config.ini
       - ./grafana/dashboards:/var/lib/grafana/dashboards
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=root
+      - GF_SECURITY_ADMIN_PASSWORD=illchangeitanyway
     depends_on:
       - prometheus
     networks:

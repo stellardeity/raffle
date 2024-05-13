@@ -1,3 +1,4 @@
+import { fileNameGenerator } from './libs';
 import { FastifyReply, FastifyRequest } from "fastify";
 
 import * as fs from "fs";
@@ -29,9 +30,7 @@ export async function editUserPhoto(req: FastifyRequest, reply: FastifyReply) {
     if (!data || !data.filename) {
         return reply.code(400).send({ error: "No image provided" });
     }
-    const fileName = `${Date.now()}_${Math.floor(
-        Math.random() * 1000
-    )}${path.extname(data.filename)}`;
+    const fileName = `${fileNameGenerator(new Date())}${path.extname(data.filename)}`;
 
     const uploadsPath = path.join(__dirname, '../../uploads', fileName);
 
@@ -39,9 +38,9 @@ export async function editUserPhoto(req: FastifyRequest, reply: FastifyReply) {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    await client.query(`UPDATE users SET photo = 'http://localhost:8080/uploads/${fileName}' WHERE id = '${decodedToken.id}';`);
+    await client.query(`UPDATE users SET photo = 'http://localhost:9200/uploads/${fileName}' WHERE id = '${decodedToken.id}';`);
 
-    return reply.code(200).send({ path: `http://localhost:8080/uploads/${fileName}` });
+    return reply.code(200).send({ path: `http://localhost:9200/uploads/${fileName}` });
 
 }
 

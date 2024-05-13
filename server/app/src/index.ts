@@ -8,6 +8,7 @@ import fastifyStatic from "@fastify/static";
 import fastifyRateLimit from "@fastify/rate-limit";
 import fastifyCaching from '@fastify/caching';
 import * as client from "prom-client";
+import fastifyCron from 'fastify-cron';
 import  { activeUsersPerCategoryMetric } from './metrics';
 
 import { adsRoutes } from "./ads/ads.route.js";
@@ -16,6 +17,7 @@ import { authRoutes } from "./auth/auth.route.js";
 
 
 import * as path from "path";
+import { fileNameGenerator } from "./users/libs";
 
 const PORT = 9200;
 
@@ -31,6 +33,18 @@ app.register(
     { privacy: fastifyCaching.privacy.NOCACHE },
 );
 
+app.register(fastifyCron, {
+    jobs: [
+        {
+            cronTime: '*/10 * * * * *', 
+            onTick: () => {
+                console.log(`Hello World ${fileNameGenerator(new Date())}`);
+            },
+            start: true
+        }
+    ]
+});
+  
 app.register(fastifyRateLimit, {
     max: 100,
     timeWindow: '1 minute'
@@ -102,10 +116,11 @@ listeners.forEach((signal) => {
     });
 });
 
+const HOST = '0.0.0.0';
+
 async function main() {
-    await app.listen({
-        port: PORT,
-        host: '0.0.0.0',
+    await app.listen(PORT, HOST, () => {
+        app.cron.startAllJobs();
     });
 }
 main();

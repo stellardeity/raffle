@@ -41,6 +41,9 @@ importers:
       fastify:
         specifier: ^4.26.2
         version: 4.26.2
+      fastify-cron:
+        specifier: ^1.3.1
+        version: 1.3.1(fastify@4.26.2)
       fastify-plugin:
         specifier: ^4.5.1
         version: 4.5.1
@@ -219,11 +222,18 @@ packages:
     resolution: {integrity: sha512-YSfsswOqWfd+M4bXIhT3hwtAb+IV8+ODwIxwdFR/7jTAPZP1wMVnSlpKnXHAN64HFOiP+Tm3HmKusEZ0+09A0w==}
     engines: {yarn: '>= 1.3.2'}
 
+  '@types/cron@2.4.0':
+    resolution: {integrity: sha512-5bBaAkqvSFBX8JMi/xCofNzG5E594TNsApMz68dLd/sQYz/HGQqgcxGHTRjOvD4G3Y+YF1Oo3S7QdCvKt1KAJQ==}
+    deprecated: This is a stub types definition. cron provides its own type definitions, so you do not need this installed.
+
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
   '@types/long@4.0.2':
     resolution: {integrity: sha512-MqTGEo5bj5t157U6fA/BiDynNkn0YknVdh48CMPkTSpFTVmvao5UQmm7uEF6xBEo7qIMAlY/JSleYaE6VOdpaA==}
+
+  '@types/luxon@3.3.8':
+    resolution: {integrity: sha512-jYvz8UMLDgy3a5SkGJne8H7VA7zPV2Lwohjx0V8V31+SqAjNmurWMkk9cQhfvlcnXWudBpK9xPM1n4rljOcHYQ==}
 
   '@types/node@20.12.7':
     resolution: {integrity: sha512-wq0cICSkRLVaf3UGLMGItu/PtdY7oaXaI/RVU+xliKVOtRna3PRY57ZDfztpDL0n11vfymMUnXv8QwYCO7L1wg==}
@@ -652,6 +662,9 @@ packages:
   create-hmac@1.1.7:
     resolution: {integrity: sha512-MJG9liiZ+ogc4TzUwuvbER1JRdgvUFSB5+VR/g5h82fGaIRWMWddtKBHi7/sVhfjQZ6SehlyhvQYrcYkaUIpLg==}
 
+  cron@2.4.4:
+    resolution: {integrity: sha512-MHlPImXJj3K7x7lyUHjtKEOl69CSlTOWxS89jiFgNkzXfvhVjhMz/nc7/EIfN9vgooZp8XTtXJ1FREdmbyXOiQ==}
+
   cross-spawn@7.0.3:
     resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}
     engines: {node: '>= 8'}
@@ -966,6 +979,14 @@ packages:
   fastfall@1.5.1:
     resolution: {integrity: sha512-KH6p+Z8AKPXnmA7+Iz2Lh8ARCMr+8WNPVludm1LGkZoD2MjY6LVnRMtTKhkdzI+jr0RzQWXKzKyBJm1zoHEL4Q==}
     engines: {node: '>=0.10.0'}
+
+  fastify-cron@1.3.1:
+    resolution: {integrity: sha512-BgOUeyu2HAJcNnL+8XnAcVLt1AMeN/SnCGTG4wDlHNFfUo/5RRnFYW8uRy3ZFpa0g43Q6ko5zdP+q1SWq8ui2Q==}
+    peerDependencies:
+      fastify: ^4.1.0
+
+  fastify-plugin@3.0.1:
+    resolution: {integrity: sha512-qKcDXmuZadJqdTm6vlCqioEbyewF60b/0LOFCcYN1B6BIZGlYJumWWOYs70SFYLDAH4YqdE1cxH/RKMG7rFxgA==}
 
   fastify-plugin@4.5.1:
     resolution: {integrity: sha512-stRHYGeuqpEZTL1Ef0Ovr2ltazUT9g844X5z/zEBFLG8RYlpDiOCIG+ATvYEp+/zmc7sN29mcIMp8gvYplYPIQ==}
@@ -1361,6 +1382,10 @@ packages:
 
   lru_map@0.3.3:
     resolution: {integrity: sha512-Pn9cox5CsMYngeDbmChANltQl+5pi6XmTrraMSzhPmMBbmgcxmqWry0U3PGapCU1yB4/LqCcom7qhHZiF/jGfQ==}
+
+  luxon@3.3.0:
+    resolution: {integrity: sha512-An0UCfG/rSiqtAIiBPO0Y9/zAnHUZxAMiCpTd5h2smgsj7GGmcenvrvww2cqNA8/4A5ZrD1gJpHN2mIHZQF+Mg==}
+    engines: {node: '>=12'}
 
   magic-string@0.25.1:
     resolution: {integrity: sha512-sCuTz6pYom8Rlt4ISPFn6wuFodbKMIHUMv4Qko9P17dpxb7s52KJTmRuZZqHdGmLCK9AOcDare039nRIcfdkEg==}
@@ -2598,9 +2623,15 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
+  '@types/cron@2.4.0':
+    dependencies:
+      cron: 2.4.4
+
   '@types/json-schema@7.0.15': {}
 
   '@types/long@4.0.2': {}
+
+  '@types/luxon@3.3.8': {}
 
   '@types/node@20.12.7':
     dependencies:
@@ -3141,6 +3172,11 @@ snapshots:
       safe-buffer: 5.2.1
       sha.js: 2.4.11
 
+  cron@2.4.4:
+    dependencies:
+      '@types/luxon': 3.3.8
+      luxon: 3.3.0
+
   cross-spawn@7.0.3:
     dependencies:
       path-key: 3.1.1
@@ -3547,6 +3583,15 @@ snapshots:
   fastfall@1.5.1:
     dependencies:
       reusify: 1.0.4
+
+  fastify-cron@1.3.1(fastify@4.26.2):
+    dependencies:
+      '@types/cron': 2.4.0
+      cron: 2.4.4
+      fastify: 4.26.2
+      fastify-plugin: 3.0.1
+
+  fastify-plugin@3.0.1: {}
 
   fastify-plugin@4.5.1: {}
 
@@ -3978,6 +4023,8 @@ snapshots:
       yallist: 4.0.0
 
   lru_map@0.3.3: {}
+
+  luxon@3.3.0: {}
 
   magic-string@0.25.1:
     dependencies:
