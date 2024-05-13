@@ -19,7 +19,8 @@ import { authRoutes } from "./auth/auth.route.js";
 import * as path from "path";
 import { fileNameGenerator } from "./users/libs";
 
-const PORT = 9200;
+const host = process.env.APP_HOST || '0.0.0.0';
+const port = process.env.APP_PORT || '9200';
 
 const app = Fastify({
     logger: true,
@@ -116,10 +117,8 @@ listeners.forEach((signal) => {
     });
 });
 
-const HOST = '0.0.0.0';
-
 async function main() {
-    await app.listen(PORT, HOST, () => {
+    await app.listen(port, host, () => {
         app.cron.startAllJobs();
     });
 }
